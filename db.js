@@ -29,6 +29,7 @@ dbReq.onsuccess = function(event) {
   db = event.target.result;
   // moves.add(db);
   // moves.set()
+  getAllHistory(db);
 }
 
 
@@ -81,7 +82,7 @@ function addHist(db, repCount, weight, move){
 
 
   //wait for transaction to be done
-  tx.oncomplete = function() {console.log('New set saved!')}
+  tx.oncomplete = function() {console.log('New set saved!'); getAllHistory(db); }
   tx.onerror = function(event){
     alert('Error saving set.');
   }
@@ -113,4 +114,43 @@ function submitSet(){
     addHist(db, rep,wgh,move);
 
   }
+}
+
+function getAllHistory(db){
+  let tx = db.transaction(['history'], 'readonly'); //Access the database
+  let store = tx.objectStore('history');
+
+  //Use cursor to get all history
+  let req = store.openCursor();
+  let allHist = [];
+
+  req.onsuccess = function(event){
+    //if the cursor request succeds...
+
+    let cursor = event.target.result;
+
+    if (cursor != null){
+      //if there is a cursor, add item to array and keep looping
+
+      allHist.push(cursor.value);
+      cursor.continue();
+    }
+    else {
+      //if the cursor is empty, then all of history is up to date. Print.
+      displayHist(allHist);
+    }
+  }
+
+  req.onerror = function(event){
+    alert("Error in cursor request" + event.target.errorCode);
+  }
+}
+
+function displayHist (setHist){
+  let listHTML = '<legend>Set History</legend><ul>';
+  for (let i = 0; i < setHist.length; i++){
+    let aSet = setHist[i];
+    listHTML += '<li>' + aSet.exer + ' ' + aSet.reps.toString() +  ' ' + aSet.kg.toString() + ' ' + new Date(aSet.created).toString() + '</li>';
+  }
+  document.getElementById('historyField').innerHTML = listHTML;
 }
