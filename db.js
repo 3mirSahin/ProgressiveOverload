@@ -31,6 +31,7 @@ dbReq.onsuccess = function(event) {
   // moves.add(db);
   // moves.set()
   getAllHistory(db);
+  getData(db,null);
 
 }
 
