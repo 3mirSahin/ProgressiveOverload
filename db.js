@@ -22,7 +22,8 @@ dbReq.onupgradeneeded = function(event) {
   // in databases are where data are stored.
   // let moves = db.createObjectStore('moves', {autoIncrement: true});
   // let workouts = db.createObjectStore('workouts', {autoIncrement: true});
-  let moveHist = db.createObjectStore('history', {keyPath: 'id', autoIncrement: true});
+  let moveHist = db.createObjectStore('history', {keyPath: 'created'});
+  // FOR THE FUTURE, IMPLEMENT AN ITERATING KEY THAT YOU CAN USE TO SLICE BY WORKOUT!!!
 }
 
 dbReq.onsuccess = function(event) {
@@ -30,6 +31,7 @@ dbReq.onsuccess = function(event) {
   // moves.add(db);
   // moves.set()
   getAllHistory(db);
+
 }
 
 
@@ -46,6 +48,7 @@ formButton.addEventListener("click", function(event) {
   else{
     submitSet();
   }
+  getData(db,null);
 });
 
 // function addMove(db, message){
@@ -154,3 +157,4 @@ function displayHist (setHist){
   }
   document.getElementById('historyField').innerHTML = listHTML;
 }
+

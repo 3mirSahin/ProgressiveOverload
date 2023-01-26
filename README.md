@@ -4,11 +4,13 @@
 
 This is the current, simple requirements that needs to be dealt on the backend.
 
-* Add a few types of workouts (and allow users to create some)
-    * On a second thought, we might want to just use a predetermined number of workouts
-* Keep a history of previous workout sets
-* Create new workout sets (Allow the adding any workout in it) and give it names
-* Show workout set trends.
+* Add a few types of exercises (and allow users to create some) - DONE
+    * On a second thought, we might want to just use a predetermined number of exercises
+* Keep a history of previous workout sets - DONE
+* Create new exercise sets (Allow the adding any workout in it) and give it names
+    * Need to allow people to give names to sets.
+* Show exercise set trends.
+* Add the function to create workouts and place sets within it.
 
 Then...
 

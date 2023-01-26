@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
-  <head><title>IndexedDB note store</title></head>
+  <head><title>IndexedDB note store</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  </head>
   <body>
     <div id="app">
       <form id="Set Form">
@@ -34,8 +36,10 @@
         <legend>Set History</legend>
 
       </fieldset>
+      <canvas id="historyChart" width="1600" height="900"></canvas>
 
     </div>
     <script src="db.js"></script>
+    <script src = "charts.js"></script>
   </body>
 </html>
