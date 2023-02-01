@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head><title>IndexedDB note store</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-trendline"></script>
   </head>
   <body>
+    <h1>Progressive Overload Tracker</h1>
     <div id="app">
       <form id="Set Form">
         <fieldset>
@@ -34,7 +37,19 @@
     <div id="historyDiv">
       <fieldset id="historyField">
         <legend>Set History</legend>
-
+        <table id="historyTable">
+          <thead>
+            <tr>
+              <th>Exercise</th>
+              <th>Weight (kg)</th>
+              <th>Reps</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="histTableBody">
+          </tbody>
+        </table>
       </fieldset>
       <canvas id="historyChart" width="1600" height="900"></canvas>
 

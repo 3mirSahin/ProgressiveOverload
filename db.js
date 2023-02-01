@@ -7,12 +7,19 @@ let formButton = document.getElementById("buttonSetForm")
 
 
 //add the current options to the moves list
-for (let option of moves){
-  let newOption = document.createElement("option");
-  newOption.value = option;
-  newOption.text = option;
-  movesDrop.appendChild(newOption);
+function populateSelect(selectElement, id){
+  for (let option of moves){
+    let newOption = document.createElement("option");
+    newOption.value = option;
+    newOption.text = option;
+    if (option == id){
+      newOption.setAttribute('selected','selected');
+    }
+    selectElement.appendChild(newOption);
+  }
 }
+
+populateSelect(movesDrop, null);
 
 dbReq.onupgradeneeded = function(event) {
   // Set the db variable to our database so we can use it!  
@@ -150,12 +157,78 @@ function getAllHistory(db){
   }
 }
 
+// function displayHist (setHist){
+//   let listHTML = '<legend>Set History</legend><ul>';
+//   for (let i = setHist.length-1; i > -1; i--){ //View in reverse order
+//     let aSet = setHist[i];
+//     listHTML += '<li>' + aSet.exer + ' ' + aSet.reps.toString() +  ' ' + aSet.kg.toString() + ' ' + new Date(aSet.created).toString() + '</li>';
+//   }
+//   document.getElementById('historyField').innerHTML = listHTML;
+// }
+
 function displayHist (setHist){
-  let listHTML = '<legend>Set History</legend><ul>';
-  for (let i = 0; i < setHist.length; i++){
+  //Display the data in a table
+  let table = document.getElementById('histTableBody')
+  table.innerHTML = "";
+  for (let i = setHist.length-1; i > -1; i--){
     let aSet = setHist[i];
-    listHTML += '<li>' + aSet.exer + ' ' + aSet.reps.toString() +  ' ' + aSet.kg.toString() + ' ' + new Date(aSet.created).toString() + '</li>';
+    let row = table.insertRow();
+
+    let cellExec = row.insertCell(0);
+    let cellKG = row.insertCell(1);
+    let cellRep = row.insertCell(2);
+    let cellDate = row.insertCell(3);
+    let cellAction = row.insertCell(4);
+
+    // cellExec.innerHTML = '<input type="text" id="exer' + aSet.created + '" value="' + aSet.exer + '">';
+    cellExec.innerHTML = '<select id="exer' + aSet.created + '"> </select>';
+    let currExec = document.getElementById("exer"+aSet.created)
+    populateSelect(currExec,aSet.exer);
+    cellKG.innerHTML = '<input type="number" id="weight' + aSet.created + '" value="' + aSet.kg + '">';
+    cellRep.innerHTML = '<input type="number" id="rep' + aSet.created + '" value="' + aSet.reps + '">';
+    cellDate.innerHTML = new Date(aSet.created);
+    cellAction.innerHTML = '<button onclick="updateData(' + aSet.created + ')">Update</button><button onclick="deleteData(' + aSet.created + ')">Delete</button>';
   }
-  document.getElementById('historyField').innerHTML = listHTML;
+}
+
+function deleteData(id) {
+  var transaction = db.transaction(["history"], "readwrite");
+  var objectStore = transaction.objectStore("history");
+  objectStore.delete(id);
+
+  // Remove the row from the HTML table
+  var table = document.getElementById("histTableBody");
+  for (var i = 0, row; row = table.rows[i]; i++) {
+    // console.log(row.cells[3], id)
+    if (row.cells[3].innerHTML == new Date(id).toString()) {
+      table.deleteRow(i);
+      break;
+    }
+  }
+  //update the table
+  getData(db,null)
+}
+
+function updateData(id){
+  //access the db
+  var transaction = db.transaction(["history"], "readwrite");
+  var objectStore = transaction.objectStore("history");
+
+  //get the values
+  var exer = document.getElementById("exer"+id).value;
+  var kg = document.getElementById("weight"+id).value;
+  var reps = document.getElementById("rep"+id).value;
+
+  var request = objectStore.get(id); //get the entry
+  request.onsuccess = function(event){
+    var data = event.target.result;
+    data.exer = exer;
+    data.kg = kg;
+    data.reps = reps;
+    objectStore.put(data);
+  };
+
+  //update the table
+  getData(db,null);
 }
 

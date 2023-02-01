@@ -75,7 +75,9 @@ function getChart(chart,totalData, type){
         var g = Math.floor(Math.random() * 255);
         var b = Math.floor(Math.random() * 255);
         return "rgb(" + r + "," + g + "," + b + ")";
-     };
+    };
+    
+    // chart.data.datasets = [];
     for (const exec in totalData){
         if (counter < chart.data.datasets.length){
             // console.log(totalData[exec], counter)
@@ -95,6 +97,10 @@ function getChart(chart,totalData, type){
         }
 
         yLen = Math.max(yLen, totalData[exec].length);
+        counter++;
+    }
+    while (counter < chart.data.datasets.length){
+        chart.data.datasets.pop();
         counter++;
     }
     chart.data.labels = [...Array(yLen).keys()]
