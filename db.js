@@ -184,9 +184,9 @@ function displayHist (setHist){
     cellExec.innerHTML = '<select id="exer' + aSet.created + '"> </select>';
     let currExec = document.getElementById("exer"+aSet.created)
     populateSelect(currExec,aSet.exer);
-    cellKG.innerHTML = '<input type="number" id="weight' + aSet.created + '" value="' + aSet.kg + '">';
+    cellKG.innerHTML = '<input type="float" id="weight' + aSet.created + '" value="' + aSet.kg + '">';
     cellRep.innerHTML = '<input type="number" id="rep' + aSet.created + '" value="' + aSet.reps + '">';
-    cellDate.innerHTML = new Date(aSet.created);
+    cellDate.innerHTML = getDateString(new Date(aSet.created));
     cellAction.innerHTML = '<button onclick="updateData(' + aSet.created + ')">Update</button><button onclick="deleteData(' + aSet.created + ')">Delete</button>';
   }
 }
@@ -232,3 +232,6 @@ function updateData(id){
   getData(db,null);
 }
 
+function getDateString(date){
+  return date.getFullYear() + "-" + date.getMonth() + "-" + date.getUTCDay() + " " + date.getUTCHours() + ":" + date.getUTCMinutes() + ":" + date.getUTCSeconds();
+}
