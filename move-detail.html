@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Move</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Edit Move</h1>
+
+    <div id="app">
+        <form id="moveDetailForm">
+            <fieldset>
+                <legend>Move Details</legend>
+                <div class="form-group">
+                    <label for="moveName">Name:</label>
+                    <input type="text" id="moveName" required>
+                </div>
+                <div class="form-group">
+                    <label for="moveDescription">Description:</label>
+                    <textarea id="moveDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="moveYoutubeLink">YouTube Link:</label>
+                    <input type="url" id="moveYoutubeLink">
+                </div>
+                <div class="form-group">
+                    <label for="moveColor">Color:</label>
+                    <input type="color" id="moveColor" required>
+                    <button type="button" id="randomizeColor">Randomize</button>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="moveIsActive">
+                        Active
+                    </label>
+                </div>
+                <button type="submit">Save Changes</button>
+            </fieldset>
+        </form>
+
+        <fieldset>
+            <legend>Labels</legend>
+            <div id="labelsContainer"></div>
+            <div class="add-label-controls">
+                <select id="addLabelSelect">
+                    <option value="">Add a label...</option>
+                </select>
+                <button id="addLabelButton">Add</button>
+            </div>
+            <div class="create-label-controls">
+                <input type="text" id="newLabelName" placeholder="New label name">
+                <button id="createLabelButton">Create</button>
+            </div>
+        </fieldset>
+
+        <fieldset class="danger-zone">
+            <legend>Danger Zone</legend>
+            <button id="deleteMoveButton" class="danger">Delete Move</button>
+        </fieldset>
+        
+        <a href="moves.html">Back to Moves List</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/validator/13.7.0/validator.min.js"></script>
+    <script src="db.js"></script>
+    <script src="move-detail.js"></script>
+</body>
+</html> 

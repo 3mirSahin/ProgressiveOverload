@@ -4,10 +4,30 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-trendline"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/validator/13.7.0/validator.min.js"></script>
   </head>
   <body>
     <h1>Progressive Overload Tracker</h1>
     <div id="app">
+      <div id="databaseSelector">
+        <fieldset>
+          <legend>Database Settings</legend>
+          <label for="dbType">Database Type:
+            <select id="dbType" onchange="switchDatabase()">
+              <option value="indexeddb">IndexedDB (Browser Storage)</option>
+              <option value="sqlite">SQLite (Local File)</option>
+            </select>
+          </label>
+          <div id="sqliteControls" style="display: none;">
+            <button onclick="document.getElementById('sqliteFile').click()">Load Database</button>
+            <input type="file" id="sqliteFile" accept=".db,.sqlite,.sqlite3" onchange="loadSQLiteFile().catch(console.error)" style="display: none;" />
+            <button onclick="saveSQLiteFile()">Save Database</button>
+            <button onclick="createNewSQLiteDB().catch(console.error)">Create New Database</button>
+          </div>
+        </fieldset>
+      </div>
+      
       <form id="Set Form">
         <fieldset>
           <legend>Add a set to history.</legend>
@@ -28,15 +48,37 @@
 
       <div id="Entry">
         <fieldset>
-          <legend>Add a new excerise.</legend>
-          <textarea id="newMove" placeholder="Enter name of exercise." required></textarea>
-          <button onclick="submitMove()">Submit</button>
-      </fieldset>
+          <legend>Manage Moves</legend>
+          <p>Add, edit, or view your saved moves.</p>
+          <a href="moves.html"><button>Manage Moves</button></a>
+        </fieldset>
+        <fieldset>
+            <legend>Quick Add a Move</legend>
+            <form id="quickAddMoveForm">
+                <input type="text" id="quickAddMoveName" placeholder="Enter new move name" required />
+                <button type="submit">Add</button>
+            </form>
+        </fieldset>
       </div>
     </div>
     <div id="historyDiv">
       <fieldset id="historyField">
         <legend>Set History</legend>
+        <div class="pagination-controls">
+          <label for="pageSize">Sets per page:
+            <select id="pageSize" onchange="updatePageSize()">
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="all">All</option>
+            </select>
+          </label>
+          <div class="page-buttons">
+            <button onclick="previousPage()" id="prevPage">Previous</button>
+            <span id="pageInfo">Page 1</span>
+            <button onclick="nextPage()" id="nextPage">Next</button>
+          </div>
+        </div>
         <table id="historyTable">
           <thead>
             <tr>
@@ -55,6 +97,7 @@
 
     </div>
     <script src="db.js"></script>
+    <script src="main.js"></script>
     <script src = "charts.js"></script>
   </body>
 </html>
